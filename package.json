@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "dev": "concurrently --kill-others-on-fail -p \"{pid}\" -c \"red,green\" \"yarn workspace api dev\" \"yarn workspace client dev\"",
-    "start:client": "yarn workspace client start",
+    "build:client": "yarn workspace client build",
     "start:api": "yarn workspace api start"
   },
   "dependencies": {
