@@ -324,7 +324,9 @@ const ShoppingListDetail: FunctionComponent = () => {
   }, [shoppingList?.items.length]);
 
   useEffect(() => {
-    if (shoppingList?.status === "archived") {
+    if (!shoppingList) return;
+
+    if (shoppingList.status === "archived") {
       showNotification({
         color: "red",
         autoClose: 3000,
@@ -333,7 +335,7 @@ const ShoppingListDetail: FunctionComponent = () => {
       });
       navigate(`/${PAGES.SHOPPING_LISTS}`);
     }
-  }, [shoppingList?.status]);
+  }, [shoppingList]);
 
   if (isLoading || !shoppingList) {
     return <SplashScreen />;
@@ -432,7 +434,10 @@ const ShoppingListDetail: FunctionComponent = () => {
                   title="Deletar"
                   hidden={isChecked}
                   disabled={
-                    isFetching || isEditing || isDeleting
+                    isEditing ||
+                    isFetching ||
+                    isDeleting ||
+                    shoppingList.status !== "active"
                   }
                   onClick={(
                     e: MouseEvent<HTMLButtonElement>
@@ -533,6 +538,7 @@ const ShoppingListDetail: FunctionComponent = () => {
           <Tabs.Tab
             value="form"
             className={classes["tab-option"]}
+            disabled={shoppingList.status !== "active"}
           >
             Criar Novo
           </Tabs.Tab>
@@ -572,10 +578,10 @@ const ShoppingListDetail: FunctionComponent = () => {
             <Accordion.Item value="customization">
               <Accordion.Control>Costumização</Accordion.Control>
               <Accordion.Panel>
-                <Text>Alterar estado da lista</Text>
+                <Text size="sm">Alterar estado da lista</Text>
                 <Group
                   grow
-                  mt="md"
+                  mt="xs"
                 >
                   {shoppingList.status === "active" && (
                     <Button
